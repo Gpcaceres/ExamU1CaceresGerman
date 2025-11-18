@@ -16,8 +16,11 @@ function fetchProducts(string $term, array $fallbackProducts): array
 
     if (class_exists('MongoDB\\Client')) {
         try {
-            $client = new MongoDB\Client($_ENV['MONGODB_URI'] ?? 'mongodb://localhost:27017');
-            $collection = $client->selectCollection($_ENV['MONGODB_DB'] ?? 'catalog', $_ENV['MONGODB_COLLECTION'] ?? 'products');
+            $defaultUri = 'mongodb+srv://admin:admin@cluster0.hlgwrpm.mongodb.net/?retryWrites=true&w=majority';
+            $client = new MongoDB\Client($_ENV['MONGODB_URI'] ?? $defaultUri);
+            $database = $_ENV['MONGODB_DB'] ?? 'catalog';
+            $collectionName = $_ENV['MONGODB_COLLECTION'] ?? 'products';
+            $collection = $client->selectCollection($database, $collectionName);
             $filter = [];
             if ($term !== '') {
                 $filter = ['name' => ['$regex' => $term, '$options' => 'i']];
