@@ -1,4 +1,5 @@
 <?php
+require __DIR__ . '/vendor/autoload.php';
 $searchTerm = trim($_GET['term'] ?? '');
 
 $sampleProducts = [
